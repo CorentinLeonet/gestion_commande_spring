@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+		<title>Commande</title>
+	</head>
+	<body class="bg-secondary">
+	
+		<nav class="navbar shadow navbar-expand-lg navbar-light bg-light">
+			<div class="container">
+			  <a class="navbar-brand" href="/home">Navigation</a>
+			  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			    <span class="navbar-toggler-icon"></span>
+			  </button>
+			  <div class="collapse navbar-collapse" id="navbarNav">
+			    <ul class="navbar-nav">
+			      <li class="nav-item active">
+			        <a class="nav-link" href="/categorie">Catégories</a>
+			      </li>
+			      <li class="nav-item">
+			        <a class="nav-link" href="/article">Articles</a>
+			      </li>
+			      <li class="nav-item">
+			        <a class="nav-link" href="/commande">Commandes</a>
+			      </li>
+			      <li class="nav-item">
+			        <a class="nav-link" href="/statistiques">Statistiques</a>
+			      </li>
+			    </ul>
+			  </div>
+			 </div>
+		</nav>
+	
+		<div class="container bg-light min-vh-100">
+			<h1 class="pt-4">Gestion des commandes</h1>
+			<hr>
+			
+			<a th:href="@{/addCommande}" class="btn btn-primary btn-sm mb-3">Ajouter</a>
+			
+			<div class="table-responsive">
+				<table class="table table-hover table-striped table-dark">
+					<thead>
+					<tr>
+					<th scope="col">Id</th>
+					<th scope="col">Date</th>
+					<th scope="col">Nom</th>
+					<th scope="col">Prénom</th>
+					<th scope="col">Cloturée</th>
+					<th style="width:15%" scope="col">Action</th>
+					</tr>
+					<tbody>
+						<tr th:each="commande : ${commandes}">
+							<td th:text="${commande.id}"></td>
+							<td th:text="${commande.date}"></td>
+							<td th:text="${commande.nom}"></td>
+							<td th:text="${commande.prenom}"></td>
+							<td th:text="${commande.cloture}"></td>
+							<td>
+		            			<a th:href="@{/commmandeEdit/{id}(id=${commande.id})}" class="btn btn-success" >Edit</a>
+				               	<a th:href="@{/commandeDelete/{id}(id=${commande.id})}" class="btn btn-danger" id="deleteButton">Delete</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- Modal -->
+			<div class="modal" tabindex="-1" role="dialog" id="deleteModal">
+	  			<div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title">Confirmation</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				        	<span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+				        <p>
+				        	Êtes-vous sûr de vouloir supprimer cette commande.
+				        	Notez que les commandes ne sont pas supposées être supprimées mais "cloturées" viar l'édition.
+				        	La suppression ne devrait être utilisée qu'en cas d'erreur et peut poser des problèmes.
+				        </p>
+				      </div>
+				      <div class="modal-footer">
+				        <a type="button" class="btn btn-primary" id="delRef" href="">Confirmer</a>
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+				      </div>
+				    </div>
+				</div>
+			</div>
+			<!-- -->
+		
+			<hr>
+			
+			<a th:href="@{/}" class="btn btn-dark">Retour</a>
+		</div>
+	</body>
+	
+	<script type="text/javascript">
+		<!-- https://www.kindsonthegenius.com/thymeleaf-spring-boot-complete-tutorial-step-by-step-with-source-codes/  point 27-->
+		$('.table #deleteButton').on('click',function(event){
+			event.preventDefault();		
+			var href = $(this).attr('href');
+			$('#deleteModal #delRef').attr('href', href);		
+			$('#deleteModal').modal();
+		});
+		
+	</script>
+	
+</html>
